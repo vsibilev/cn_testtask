@@ -39,6 +39,7 @@ class App
 		//Ajax New task Actions
 		add_action( 'wp_ajax_nopriv_add_new_task', array(&$this, 'add_new_task_callback' ));
 		add_action( 'wp_ajax_add_new_task', array(&$this, 'add_new_task_callback' ));
+
 	}
 
 	public function initShortcodes() {
@@ -56,6 +57,9 @@ class App
 
 		//Add Modal Html
 		add_filter('cn_after_content', array(&$this, 'add_task_modal'));
+
+		//Change Title
+		add_filter( 'pre_get_document_title', array(&$this, 'change_title' ) );
 	}
 
 	public function add_custom_col($cols) {
@@ -308,5 +312,12 @@ class App
 	       	'url' => admin_url('admin-ajax.php'),
 	       )
 		);
+	}
+
+	public function change_title($title) {
+		if (isset($GLOBALS['pagename'])) {
+			$title = ucfirst( $GLOBALS['pagename'] );
+		}
+		return $title;
 	}
 }
